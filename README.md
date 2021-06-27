@@ -293,3 +293,152 @@ From the graphical representation of the netlist the obtained cell is mux2_1
 - Select input sel = 0, Output Y = i1
 
  ## 3. Lab 2 GLS Synthesis simulation mismatch : 
+ 
+ 
+# Day 5 
+
+## Contents 
+1. If-else structure 
+2. Lab Session - Combinational logic optimisation
+3. Lab Session - Sequential logic optimisation
+ 
+## If - Else structure
+The If-else structure in the verilog code are used to create priority logic. 
+The syntax of a If-else structure is shown below, 
+
+```SystemVerilog
+if <condition>
+   begin
+         statement 1;
+         statement 2; 
+   end
+else 
+   begin
+         statement 1;
+         statement 2; 
+   end
+```
+Consider an example of a If-else structure in verilog having three conditions as defined below, 
+
+```SystemVerilog
+if <cond_1>
+   begin
+         A1;
+   end
+else if <cond_2>
+   begin
+         A2;
+   end
+else if <cond_3>
+   begin
+         A3;
+   end
+else 
+   begin
+         A4;
+   end
+```
+As the If-else structure are evaluated based on priority, first the cond_1 is evaluated.<br/>
+If it is true, the output is assigned with the logic of A1.<br/>
+If the condition is false, the next condition is evaluated as specified by the else if statement.<br/>
+The implementation of the above verilog code in the hardware can be graphically represented as below, 
+
+
+
+
+
+In the hardware implemented by MUX as shown above, the output of MUX 1 (Y) is selected with A1 if the cond_1 is true.<br/>
+If cond_1 is False and cond_2 is True, the output Y is obtained from the input A2 of MUX 2<br/>
+
+
+One of the issues of using If-else construct, is the problem of inferred latches. <br/>
+This error is caused by incomplete If statement as shown in the syntax below, 
+
+```SystemVerilog
+if <condition>
+   begin
+         statement 1;
+         statement 2; 
+   end
+else if <condition>
+   begin
+         statement 1;
+         statement 2; 
+   end
+```
+The hardware implementation of the above verilog code is shown below,<br/> 
+Add picture
+
+In the hardware implementation, due to the absence of the else structure ie, cond_1 and cond_2 is false, the output Y will take the previous value of the output. <br/>
+This causes the implementation of a latch at the input of MUX 2.<br/>
+
+However, such inferred latches are found to be useful during the implementation of counters. 
+An example verilog code implementing a counter is shown below, 
+
+```SystemVerilog
+reg[2:0] count
+always @(posedge clk, posedge reset)
+begin
+   if <reset>
+      count <= 3'000;
+   else if <enable>
+      count <= count + 1;
+end
+```
+In the verilog code, there is an incomplete if structure without an else block.<br/>
+At the positive edge of the reset the count is assigned to 000.<br/>
+In the next condition, if there is enable, the count is increcment to 1.<br/> 
+However, if there is no enable, there is no output assigned to count. The scenario is similar to the previous example that leads to the scenario of inferred latch.<br/>
+The hardware level implementation of the above verilog code is shown below, 
+Add image!
+
+When the enable is 1, the MUX output is count incremented by 1. But as enable is 0, the 0th input of the MUX signify a inferred latch.<br/> 
+In this case, the count will latch on to the previous value, thereby functionality of the counter is still preserved.<br/>  
+
+Hence, inferred latches must not be present in combinational circuit but can be allowed in sequential circuits. 
+
+## Case structure
+The case structure is used inside a always block for a register variable.<br/>  
+The syntax of a case statement is shown below, 
+
+```SystemVerilog
+reg y
+always @(*)
+begin
+   case <sel>
+         2'00 : statement 1; 
+         2'00 : statement 2;                             
+end
+```
+
+Consider a verilog code with a case statment having 4 select conditions as shown below, 
+
+```SystemVerilog
+reg y
+always @(*)
+begin
+   case <sel>
+         2'00 : C1; 
+         2'01 : C2;
+         2'10 : C3; 
+         2'11 : C4;
+end
+```
+
+The hardware implementation of the above case statement is realised by a 4x1 MUX with sel as the select input as shown below, 
+
+
+
+
+The problems that can arise due to the usage of the case statement are similar to the 
+
+
+
+
+
+
+
+
+
+
+
