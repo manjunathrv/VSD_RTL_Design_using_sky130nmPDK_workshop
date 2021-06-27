@@ -298,11 +298,14 @@ From the graphical representation of the netlist the obtained cell is mux2_1
 # Day 5 
 
 ## Contents 
-1. If-else structure 
-2. Lab Session - Combinational logic optimisation
-3. Lab Session - Sequential logic optimisation
+1. If-else statement
+2. Case Statement 
+3. For loop and generate
+4. Lab Session 1 - Incomplete If-else
+5. Lab Session 2 - Incomplete Case
+6. Lab Session 3 - For Loop and generate
  
-## If - Else structure
+## 1. If - Else statement
 The If-else structure in the verilog code are used to create priority logic. 
 The syntax of a If-else structure is shown below, 
 
@@ -338,7 +341,7 @@ else
          A4;
    end
 ```
-As the If-else structure are evaluated based on priority, first the cond_1 is evaluated.<br/>
+Since, If-else statement are evaluated based on priority, first the cond_1 is evaluated.<br/>
 If it is true, the output is assigned with the logic of A1.<br/>
 If the condition is false, the next condition is evaluated as specified by the else if statement.<br/>
 The implementation of the above verilog code in the hardware can be graphically represented as below, 
@@ -389,32 +392,34 @@ In the verilog code, there is an incomplete if structure without an else block.<
 At the positive edge of the reset the count is assigned to 000.<br/>
 In the next condition, if there is enable, the count is increcment to 1.<br/> 
 However, if there is no enable, there is no output assigned to count. The scenario is similar to the previous example that leads to the scenario of inferred latch.<br/>
-The hardware level implementation of the above verilog code is shown below, 
+The hardware level implementation of the above verilog code is shown below, <br/> 
 Add image!
 
 When the enable is 1, the MUX output is count incremented by 1. But as enable is 0, the 0th input of the MUX signify a inferred latch.<br/> 
 In this case, the count will latch on to the previous value, thereby functionality of the counter is still preserved.<br/>  
-
 Hence, inferred latches must not be present in combinational circuit but can be allowed in sequential circuits. 
 
-## Case structure
-The case structure is used inside a always block for a register variable.<br/>  
+## 2. Case structure
+The case structure is used inside a always block with a register variable.<br/>  
 The syntax of a case statement is shown below, 
 
 ```SystemVerilog
-reg y
+reg[1:0] sel
 always @(*)
 begin
    case <sel>
          2'00 : statement 1; 
-         2'00 : statement 2;                             
+         2'01 : statement 2; 
+         2'10 : statement 2;
+         2'11 : statement 2;
+   endcase
 end
 ```
 
 Consider a verilog code with a case statment having 4 select conditions as shown below, 
 
 ```SystemVerilog
-reg y
+reg[1:0] sel
 always @(*)
 begin
    case <sel>
@@ -422,6 +427,7 @@ begin
          2'01 : C2;
          2'10 : C3; 
          2'11 : C4;
+   endcase
 end
 ```
 
@@ -430,14 +436,158 @@ The hardware implementation of the above case statement is realised by a 4x1 MUX
 
 
 
-The problems that can arise due to the usage of the case statement are similar to the 
+The problems that can arise due to the usage of the case statement are, 
+- Incomplete Case statement lead to inferred latches 
+   Consider the example below of a case statement, 
+   
+   ```SystemVerilog
+   reg[1:0] sel
+   always @(*)
+   begin
+    case <sel>
+         2'00 : C1; 
+         2'01 : C2;
+    endcase
+   end
+   ```
+   In this case statement, the conditions for sel with 10 and 11 are not defined.  
+   This leads to the output value retaining the previous output as it is similar to an inferred latch. 
+   One method to avoid inferred latches in a case statement is by using a default statement. <br/> 
+   The above case statement having a default case is shown below, 
+   ```SystemVerilog
+   reg[1:0] sel
+   always @(*)
+   begin
+      case <sel>
+         2'00 : C1; 
+         2'01 : C2;
+         default : statement;
+     endcase
+   end
+   ```
+- Partial assignment in the case statement 
+   Inferred latches are also formed in case statements having partial assignment. Consider the example below, 
+   ```SystemVerilog
+   reg[1:0] sel;
+   reg x, y;
+   always @(*)
+   begin
+      case <sel>
+         2'00 : begin 
+                  x = a;
+                  y = b;
+                end
+         2'00 : begin 
+                  x = c;
+                end
+         default : begin 
+                     x = d;
+                     y = b;
+                  end
+     endcase
+   end
+   ```
+   The hardware implementation of the above code is described below, <br/>
+   Add Image <br/>
+   
+
+   It can be seen that in MUX 2 when sel = 01, input 1 of the MUX 2 is not assigned. <br/>
+   This can cause an inferred latch at input 1. <br/>
+   Thus, the outputs must be assigned in all the segments in the case. <br/>
+   
+   - Overlapping case statement 
+   In the If-else statement, a priority is created and only one condition is executed. <br/>
+   However, in a case statement all the conditions of the case are executed. <br/>
+   If there is an overlapping case, this could lead to unpredictable outputs as the outputs can be assigned for two case condions. <br/>
+   
+## 4. Lab Session 1 Incomplete If-Else statement
+  - Example 1
+    Verilog code of the RTL design used to check the simulation and synthesis of incomplete If-Else statment is shown below, 
+   ```SystemVerilog
+   module incomp_if (input i0 , input i1 , input i2 , output reg y);
+   always @ (*)
+      begin
+	      if(i0)
+	   	y <= i1;
+      end
+   endmodule
+   ```
+   #### 1. Execute the verilog code in iverlog 
+    <pre><code><strong>iverilog</strong> ternary_operator_mux.v tb_ternary_operator.v</code></pre>   
+    <pre><code>./a.out</code></pre>
+    <pre><code><strong>gtkwave</strong> tb_ternary_operator_mux.vcd</code></pre>
+   Execution 
+   
+   The output seen in gtkwave
+   
+   #### 2. Synthesis done in yosys
+    <pre><code><strong>iverilog</strong> ternary_operator_mux.v tb_ternary_operator.v</code></pre>   
+    <pre><code>./a.out</code></pre>
+    <pre><code><strong>gtkwave</strong> tb_ternary_operator_mux.vcd</code></pre>
+    
+   From the synthesis output, it is seen that the tool has taken inferred a D- latch 
+   
+   #### 3. Generate netlist and save the verilog file after synthesis 
+      <pre><code><strong>abc</strong> -liberty ../my_lib/lib/sky130_fd_sc_hd__tt_025C_1v80.lib</code></pre>   
+      <pre><code><strong>write_verilog</strong> -noattr ternary_operator_mux_netlist.v </code></pre>
+       <pre><code><strong>show</strong></code></pre>
+   
+   The netlist show is showing a D-latch. 
+   Thus the incompelte If can cause inferred latch. 
+   
+
+ - Example 2 (if2)
+    Verilog code of the RTL design used to check the simulation and synthesis of incomplete If-Else statment is shown below, 
+   ```SystemVerilog
+   module incomp_if2 (input i0 , input i1 , input i2 , input i3, output reg y);
+   always @ (*)
+   begin
+   	if(i0)
+   		y <= i1;
+   	else if (i2)
+	   	y <= i3;
+
+   end
+   endmodule
+   ```
+   #### 1. Execute the verilog code in iverlog 
+    <pre><code><strong>iverilog</strong> ternary_operator_mux.v tb_ternary_operator.v</code></pre>   
+    <pre><code>./a.out</code></pre>
+    <pre><code><strong>gtkwave</strong> tb_ternary_operator_mux.vcd</code></pre>
+   Execution 
+   
+   The output seen in gtkwave
+   
+   #### 2. Synthesis done in yosys
+    <pre><code><strong>iverilog</strong> ternary_operator_mux.v tb_ternary_operator.v</code></pre>   
+    <pre><code>./a.out</code></pre>
+    <pre><code><strong>gtkwave</strong> tb_ternary_operator_mux.vcd</code></pre>
+    
+   From the synthesis output, it is seen that the tool has taken inferred a D- latch 
+   
+   #### 3. Generate netlist and save the verilog file after synthesis 
+      <pre><code><strong>abc</strong> -liberty ../my_lib/lib/sky130_fd_sc_hd__tt_025C_1v80.lib</code></pre>   
+      <pre><code><strong>write_verilog</strong> -noattr ternary_operator_mux_netlist.v </code></pre>
+       <pre><code><strong>show</strong></code></pre>
+   
+   The netlist show is showing a D-latch. 
+   Thus the incompelte If can cause inferred latch. 
+   
+
+## 4. Lab Session 2 Incomplete Case statement
+  - Example 1 (comp_case)
+    Verilog code of the RTL design used to check the simulation and synthesis of incomplete case statement is shown below, 
+   ```SystemVerilog
+   module incomp_if (input i0 , input i1 , input i2 , output reg y);
+   always @ (*)
+      begin
+	      if(i0)
+	   	y <= i1;
+      end
+   endmodule
 
 
-
-
-
-
-
+## 5. Lab Session 2 Incomplete If-Else statement
 
 
 
