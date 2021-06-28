@@ -1,18 +1,34 @@
 # VSD RTL design workshop with sky130 Technology
-A 5-day workshop conducted by VSD on the topic of RTL design using sky130 Technology.
+A 5-day workshop conducted by VSD on the topic of RTL design using sky130 Technology from 23rd June 2021 to 27th June 2021. <br/>
+The link to the workshop is https://www.vlsisystemdesign.com/rtl-design-using-verilog-with-sky130-technology/ <br/>
+In this repository, the topics and lab session covered in the workshop is presented. <br/>
 
+### Completed upto Day 2, ### Day 3, Day 4 and Day 5 in progress. 
 
-
-
-https://www.vlsisystemdesign.com/rtl-design-using-verilog-with-sky130-technology/
 # Day 1 
 
-## Contents 
-1. Introduction to technology library file  
-2. Lab Session 1 - Hierachal and Flatten synthesis
-3. Lab Session 2 - Flip-Flop implementatation and synthesis 
+## Introduction to open-source EDA tools - iverilog, gtkwave and Yosys
 
+<img src="Images/Day_1_1a.PNG" width="400">
 
+The ASIC design flow is described in the first flowchart in the above figure. 
+In this workshop the focus is on RTL design and verification. 
+The important steps are, 
+1. RTL design using verilog
+2. Simulation 
+3. Synthesis and Verification
+
+The opensource tools used in this workshop are,
+1. iVerilog - Tool used for simulation of the RTL design. 
+2. GTKwave - For checking the output waveforms of the logical expression of the  simulation. 
+3. Yosys - For synthesis and generation of the netlist. 
+
+ The steps followed for the RTL design, simulation, synthesis and verification are as described below, 
+1. Input the RTL verilog code and testbench to iVerilog
+2. Output obtained is visualised in gtk and check the functionality
+3. Perform synthesis and generate netlist.
+4. Input the netlist, verilog models and testbenct to iVerilog
+5. Check the output waveform in gtk and compare with pre-synthesis RTL code. 
 
 
 # Day 2 
@@ -22,12 +38,15 @@ https://www.vlsisystemdesign.com/rtl-design-using-verilog-with-sky130-technology
 2. Lab Session 1 - Hierachal and Flatten synthesis
 3. Lab Session 2 - Flip-Flop implementatation and synthesis 
 
- The steps followed is similar to Example 1 as described below, 
-- Input the RTL verilog code and testbench to iVerilog
-- Output obtained is visualised in gtk and check the functionality
-- Perform synthesis and generate netlist.
-- Input the netlist, verilog models and testbenct to iVerilog
-- Check the output waveform in gtk and compare with pre-synthesis RTL code. 
+## 1. Introduction to technology library file
+
+The technology library used in this workshop is obtained from skywater technology. 
+The process technology is developed in 130nm CMOS. 
+A snapshot of the contents of the technology file is show below, 
+<img src="Images/Day_2_Intro_1.PNG" width="600">
+
+The attributes of each pin such as power, input capacitance, area and timing information are described in the lib file.
+
 
 
 ## 2. Lab Session 1 - Hierachal and Flatten synthesis
@@ -191,7 +210,7 @@ In this next examples, the test of different D-flip flop configurations as menti
 
 A schematic of the three different D-flip flop elements is shown below,  <br/>
 
-
+<img src="Images/Day_2_Intro.PNG" width="600">
 
 ### Example 4
 
@@ -212,53 +231,82 @@ endmodule
 ```
 The simulation of the verilog code, synthesis and generation of the netlist are done by the following steps, 
 #### 1. Execute the verilog code in iverlog 
-<pre><code><strong>iverilog</strong> ternary_operator_mux.v tb_ternary_operator.v</code></pre>   
+<pre><code><strong>iverilog</strong> dff_asyncres.v tb_dff_asyncres.v</code></pre>   
 <pre><code>./a.out</code></pre>
-<pre><code><strong>gtkwave</strong> tb_ternary_operator_mux.vcd</code></pre>
-
+<pre><code><strong>gtkwave</strong> tb_dff_asyncres.vcd</code></pre>
 
 The output obtained for the functionality with verilog code in GTKwave is shown below,
+<img src="Images/Day_2_4a.PNG" width="600">
 
-![Day_4_Commands](Images/Day_4_Lab_GLS_1.png)
+As the reset goes to low, the output Q goes low irrespective of the clockcyle edge.<br/>
+The behaviour of the asynchronus reset D-flipflop is found to be correct.
 
 #### 2. Perform Synthesis of the submodule 1 in Yosys
  <pre><code><strong>yosys</strong> </code></pre>   
  <pre><code><strong>read_liberty</strong> -lib my_lib\lib\sky130_fd_sc_hd__tt_025C_1v80.lib </code></pre>
- <pre><code><strong>read_verilog</strong> ternary_operator_mux.v</code></pre>
- <pre><code><strong>synth</strong> synth -top ternary_operator_mux</code></pre>
+ <pre><code><strong>read_verilog</strong> dff_asyncres.v</code></pre>
+ <pre><code><strong>synth</strong> synth -top dff_asyncres</code></pre>
 
-![Day_4_Commands](Images/Day_4_Lab_GLS_2.PNG)
+<img src="Images/Day_2_4b.PNG" width="600">
 
 
-From the above output log after synthesis, it is seen that AND gate is inferred. 
+From the above output log after synthesis, it is seen that a D-flipflop is inferred. 
 
 #### 3. Generate netlist  
- <pre><code><strong>abc</strong> -liberty ../my_lib/lib/sky130_fd_sc_hd__tt_025C_1v80.lib</code></pre>   
- <pre><code><strong>write_verilog</strong> -noattr ternary_operator_mux_netlist.v </code></pre>
+ <pre><code><strong>abc</strong> -liberty ../my_lib/lib/sky130_fd_sc_hd__tt_025C_1v80.lib</code></pre> 
+ <pre><code><strong>dfflibmap</strong> -liberty ../my_lib/lib/sky130_fd_sc_hd__tt_025C_1v80.lib</code></pre>
  <pre><code><strong>show</strong></code></pre>
  
-![Day_4_Commands](Images/Day_4_Lab_GLS_3.PNG)
+<img src="Images/Day_2_4c.PNG" width="600">
 
-The schematic of the netlist now shows only the AND gate from the submodule 1. 
-The synthesis of submodules in large design help to reduce the time taken in the synthesis of large designs.  
 
 ### Example 5
 
 Asynchronus Set D-flip flop :
-In a D-Flip flop with asynchronus reset, the output Q of the flop will go to active low when reset is low regardless of the clockedge.
-The verilog code of an Asynchronus Reset D-flip flop is shown below, 
+In a D-Flip flop with asynchronus set, the output Q of the flop will go to active high when Set is high regardless of the clockedge.
+The verilog code of an Asynchronus SET D-flip flop is shown below, 
 ```SystemVerilog
-module dff_asyncres ( input clk ,  input async_reset , input d , output reg q );
-always @ (posedge clk , posedge async_reset)
+module dff_async_set ( input clk ,  input async_set , input d , output reg q );
+always @ (posedge clk , posedge async_set)
 begin
-	if(async_reset)
-		q <= 1'b0;
+	if(async_set)
+		q <= 1'b1;
 	else	
 		q <= d;
 end
 endmodule
 
+
 ```
+The simulation of the verilog code, synthesis and generation of the netlist are done by the following steps, 
+#### 1. Execute the verilog code in iverlog 
+<pre><code><strong>iverilog</strong> dff_async_set.v tb_dff_asyncres.v</code></pre>   
+<pre><code>./a.out</code></pre>
+<pre><code><strong>gtkwave</strong> tb_dff_async_set.vcd</code></pre>
+
+The output obtained for the functionality with verilog code in GTKwave is shown below,
+<img src="Images/Day_2_5a.PNG" width="600">
+
+As the Set goes to high, the output Q goes high irrespective of the clockcyle edge.<br/>
+The behaviour of the asynchronus reset D-flipflop is found to be correct.
+
+#### 2. Perform Synthesis of the submodule 1 in Yosys
+ <pre><code><strong>yosys</strong> </code></pre>   
+ <pre><code><strong>read_liberty</strong> -lib my_lib\lib\sky130_fd_sc_hd__tt_025C_1v80.lib </code></pre>
+ <pre><code><strong>read_verilog</strong> dff_async_set.v</code></pre>
+ <pre><code><strong>synth</strong> synth -top dff_async_set</code></pre>
+
+<img src="Images/Day_2_5c.PNG" width="600">
+
+
+From the above output log after synthesis, it is seen that a D-flipflop is inferred. 
+
+#### 3. Generate netlist  
+ <pre><code><strong>abc</strong> -liberty ../my_lib/lib/sky130_fd_sc_hd__tt_025C_1v80.lib</code></pre> 
+ <pre><code><strong>dfflibmap</strong> -liberty ../my_lib/lib/sky130_fd_sc_hd__tt_025C_1v80.lib</code></pre>
+ <pre><code><strong>show</strong></code></pre>
+ 
+<img src="Images/Day_2_5d.PNG" width="600">
 
 ### Example 6
 Synchronus Reset D-flip flop :
@@ -276,6 +324,35 @@ end
 endmodule
 
 ```
+The simulation of the verilog code, synthesis and generation of the netlist are done by the following steps, 
+#### 1. Execute the verilog code in iverlog 
+<pre><code><strong>iverilog</strong> dff_asyncres.v tb_dff_asyncres.v</code></pre>   
+<pre><code>./a.out</code></pre>
+<pre><code><strong>gtkwave</strong> tb_dff_asyncres.vcd</code></pre>
+
+The output obtained for the functionality with verilog code in GTKwave is shown below,
+<img src="Images/Day_2_4a.PNG" width="600">
+
+As the reset goes to low, the output Q goes low irrespective of the clockcyle edge.<br/>
+The behaviour of the asynchronus reset D-flipflop is found to be correct.
+
+#### 2. Perform Synthesis of the submodule 1 in Yosys
+ <pre><code><strong>yosys</strong> </code></pre>   
+ <pre><code><strong>read_liberty</strong> -lib my_lib\lib\sky130_fd_sc_hd__tt_025C_1v80.lib </code></pre>
+ <pre><code><strong>read_verilog</strong> dff_asyncres.v</code></pre>
+ <pre><code><strong>synth</strong> synth -top dff_asyncres</code></pre>
+
+<img src="Images/Day_2_4b.PNG" width="600">
+
+
+From the above output log after synthesis, it is seen that a D-flipflop is inferred. 
+
+#### 3. Generate netlist  
+ <pre><code><strong>abc</strong> -liberty ../my_lib/lib/sky130_fd_sc_hd__tt_025C_1v80.lib</code></pre> 
+ <pre><code><strong>dfflibmap</strong> -liberty ../my_lib/lib/sky130_fd_sc_hd__tt_025C_1v80.lib</code></pre>
+ <pre><code><strong>show</strong></code></pre>
+ 
+<img src="Images/Day_2_4c.PNG" width="600">
 
 
 
@@ -290,7 +367,7 @@ endmodule
    Combinational logic optimisation is needed in a digital circuit design for the following main reasons, 
    - To minimise the area and power consumption.
    - Direct 
-   - Reducing the number of gates by optimising the boolean logic using K-Map or 
+   - Reducing the number of gates by optimising the boolean logic using K-Map. 
 
 ### Constant propogation : 
 Consider the following example of a combinational logic network in Figure 3.1a. 
