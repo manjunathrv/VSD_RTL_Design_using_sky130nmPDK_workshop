@@ -3,7 +3,7 @@ A 5-day workshop conducted by VSD on the topic of RTL design using sky130 Techno
 The link to the workshop is https://www.vlsisystemdesign.com/rtl-design-using-verilog-with-sky130-technology/ <br/>
 In this repository, the topics and lab session covered in the workshop is presented. <br/>
 
-### Completed upto Day 2, ### Day 3, Day 4 and Day 5 in progress. 
+### Workshop content writing still in progress.
 
 # Day 1 
 
@@ -215,7 +215,7 @@ A schematic of the three different D-flip flop elements is shown below,  <br/>
 ### Example 4
 
 1. Asynchronus Reset D-flip flop :
-In a D-Flip flop with asynchronus reset, the output Q of the flop will go to active low when reset is low regardless of the clockedge.
+In a D-Flip flop with asynchronus reset, the output Q of the flop will go to active low when reset is high regardless of the clockedge.
 The verilog code of an Asynchronus Reset D-flip flop is shown below, 
 ```SystemVerilog
 module dff_asyncres ( input clk ,  input async_reset , input d , output reg q );
@@ -275,8 +275,6 @@ begin
 		q <= d;
 end
 endmodule
-
-
 ```
 The simulation of the verilog code, synthesis and generation of the netlist are done by the following steps, 
 #### 1. Execute the verilog code in iverlog 
@@ -296,7 +294,7 @@ The behaviour of the asynchronus reset D-flipflop is found to be correct.
  <pre><code><strong>read_verilog</strong> dff_async_set.v</code></pre>
  <pre><code><strong>synth</strong> synth -top dff_async_set</code></pre>
 
-<img src="Images/Day_2_5c.PNG" width="600">
+<img src="Images/Day_2_5b.PNG" width="600">
 
 
 From the above output log after synthesis, it is seen that a D-flipflop is inferred. 
@@ -306,43 +304,42 @@ From the above output log after synthesis, it is seen that a D-flipflop is infer
  <pre><code><strong>dfflibmap</strong> -liberty ../my_lib/lib/sky130_fd_sc_hd__tt_025C_1v80.lib</code></pre>
  <pre><code><strong>show</strong></code></pre>
  
-<img src="Images/Day_2_5d.PNG" width="600">
+<img src="Images/Day_2_5c.PNG" width="600">
 
 ### Example 6
 Synchronus Reset D-flip flop :
-In a D-Flip flop with asynchronus reset, the output Q of the flop will go to active low when reset is low regardless of the clockedge.
-The verilog code of an Asynchronus Reset D-flip flop is shown below, 
+In a D-Flip flop with synchronus reset, the output Q of the flop will go to active low when reset is high during the positive edge of the clock.
+The verilog code of an synchronus Reset D-flip flop is shown below, 
 ```SystemVerilog
-module dff_asyncres ( input clk ,  input async_reset , input d , output reg q );
-always @ (posedge clk , posedge async_reset)
+module dff_syncres ( input clk , input async_reset , input sync_reset , input d , output reg q );
+always @ (posedge clk )
 begin
-	if(async_reset)
+	if (sync_reset)
 		q <= 1'b0;
 	else	
 		q <= d;
 end
 endmodule
-
 ```
 The simulation of the verilog code, synthesis and generation of the netlist are done by the following steps, 
 #### 1. Execute the verilog code in iverlog 
-<pre><code><strong>iverilog</strong> dff_asyncres.v tb_dff_asyncres.v</code></pre>   
+<pre><code><strong>iverilog</strong> dff_syncres.v tb_dff_asyncres.v</code></pre>   
 <pre><code>./a.out</code></pre>
-<pre><code><strong>gtkwave</strong> tb_dff_asyncres.vcd</code></pre>
+<pre><code><strong>gtkwave</strong> dff_syncres.vcd</code></pre>
 
 The output obtained for the functionality with verilog code in GTKwave is shown below,
-<img src="Images/Day_2_4a.PNG" width="600">
+<img src="Images/Day_2_6a.PNG" width="600">
 
-As the reset goes to low, the output Q goes low irrespective of the clockcyle edge.<br/>
+As the reset goes to low, the output Q goes low at the positive edge of the next clockcyle.<br/>
 The behaviour of the asynchronus reset D-flipflop is found to be correct.
 
 #### 2. Perform Synthesis of the submodule 1 in Yosys
  <pre><code><strong>yosys</strong> </code></pre>   
  <pre><code><strong>read_liberty</strong> -lib my_lib\lib\sky130_fd_sc_hd__tt_025C_1v80.lib </code></pre>
- <pre><code><strong>read_verilog</strong> dff_asyncres.v</code></pre>
- <pre><code><strong>synth</strong> synth -top dff_asyncres</code></pre>
+ <pre><code><strong>read_verilog</strong> async_reset.v</code></pre>
+ <pre><code><strong>synth</strong> synth -top async_reset</code></pre>
 
-<img src="Images/Day_2_4b.PNG" width="600">
+<img src="Images/Day_2_6b.PNG" width="600">
 
 
 From the above output log after synthesis, it is seen that a D-flipflop is inferred. 
@@ -352,7 +349,7 @@ From the above output log after synthesis, it is seen that a D-flipflop is infer
  <pre><code><strong>dfflibmap</strong> -liberty ../my_lib/lib/sky130_fd_sc_hd__tt_025C_1v80.lib</code></pre>
  <pre><code><strong>show</strong></code></pre>
  
-<img src="Images/Day_2_4c.PNG" width="600">
+<img src="Images/Day_2_6c.PNG" width="600">
 
 
 
@@ -946,4 +943,6 @@ The problems that can arise due to the usage of the case statement are,
 
 
 
+# Acknowledgement
+Kunal Ghosh, VSD Technologies Pvt. Ltd
 
