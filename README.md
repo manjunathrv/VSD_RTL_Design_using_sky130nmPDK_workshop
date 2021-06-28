@@ -1,6 +1,33 @@
 # VSD_RTL_workshop
 
 
+# Day 2 
+
+## Contents 
+1. Introduction to technology library file  
+2. Lab Session 1 - Hierachal and Flatten synthesis
+3. Lab Session 2 - Flip-Flop implementatation and synthesis 
+
+
+
+
+## 2. Lab Session 1 - Hierachal and Flatten synthesis
+### Example 1 
+Consider the combinational circuit described below, 
+
+The combination circuit consists of two submodules. <\br>
+
+
+   ```SystemVerilog
+   module incomp_if (input i0 , input i1 , input i2 , output reg y);
+   always @ (*)
+      begin
+	      if(i0)
+	   	y <= i1;
+      end
+   endmodule
+```
+
 # Day 3 
 
 ## Contents 
