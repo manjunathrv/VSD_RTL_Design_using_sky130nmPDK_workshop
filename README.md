@@ -20,47 +20,69 @@
 ### Example 1 
 Consider the combinational circuit described below, 
 
+<img src="Images/Day_2_1a.PNG" width="400">
+
 The combination circuit consists of two submodules. <br/>
 1. Submodule U1 : Consists of a AND gate with A and B as inputs. 
-2. Submodule U2 : Consists of a OR gate having inputs C and output from submodule U1.  
+2. Submodule U2 : Consists of a OR gate having inputs C and output from submodule U1. 
 
-The verilog code of the above combinational circuit with two submodule is shown below 
+The logical expression for the above combinational circuit is given by, <br/>
+![\begin{align*}
+Y &= AB + C\\
+\end{align*}
+](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cbegin%7Balign%2A%7D%0AY+%26%3D+AB+%2B+C%5C%5C%0A%5Cend%7Balign%2A%7D%0A)
+
+The verilog code of the above combinational circuit with two submodules is shown below 
 ```SystemVerilog
-   module incomp_if (input i0 , input i1 , input i2 , output reg y);
-   always @ (*)
-      begin
-	      if(i0)
-	   	y <= i1;
-      end
-   endmodule
+module sub_module2 (input a, input b, output y);
+	assign y = a | b;
+endmodule
+
+module sub_module1 (input a, input b, output y);
+	assign y = a&b;
+endmodule
+
+module multiple_modules (input a, input b, input c , output y);
+	wire net1;
+	sub_module1 u1(.a(a),.b(b),.y(net1));  //net1 = a&b
+	sub_module2 u2(.a(net1),.b(c),.y(y));  //y = net1|c ,ie y = a&b + c;
+endmodule
 ```
 Next, the simulation of the verilog code, synthesis and generation of the netlist is done by the following steps, 
 #### 1. Execute the verilog code in iverlog 
-<pre><code><strong>iverilog</strong> ternary_operator_mux.v tb_ternary_operator.v</code></pre>   
+<pre><code><strong>iverilog</strong> multiple_modules.v tb_multiple_modules.v.v</code></pre>   
 <pre><code>./a.out</code></pre>
-<pre><code><strong>gtkwave</strong> tb_ternary_operator_mux.vcd</code></pre>
+<pre><code><strong>gtkwave</strong> multiple_modules.vcd</code></pre>
 
+<img src="Images/Day_2_1c.PNG" width="600">
 
 The output obtained for the functionality with verilog code in GTKwave is shown below,
 
-![Day_4_Commands](Images/Day_4_Lab_GLS_1.png)
+<img src="Images/Day_2_1b.PNG" width="600">
+
+It is seen that the output waverform of Y of the combinational circuit is correct for the logical expression as stated earlier. 
 
 #### 2. Perform Synthesis in Yosys
- <pre><code><strong>yosys</strong> </code></pre>   
- <pre><code><strong>read_liberty</strong> -lib my_lib\lib\sky130_fd_sc_hd__tt_025C_1v80.lib </code></pre>
- <pre><code><strong>read_verilog</strong> ternary_operator_mux.v</code></pre>
- <pre><code><strong>synth</strong> -top ternary_operator_mux</code></pre>
+ <pre><code>
+ <strong>yosys</strong> <br/>
+ <strong>read_liberty</strong> -lib ../../sky130_fd_sc_hd__tt_025C_1v80.lib <br/>
+ <strong>read_verilog</strong> multiple_modules.v <br/>
+ <strong>synth</strong> -top multiple_modules <br/>
+ </code></pre>
+ 
 
-![Day_4_Commands](Images/Day_4_Lab_GLS_2.PNG)
+ <pre><code><strong>read_verilog</strong> multiple_modules.v</code></pre>
+ <pre><code><strong>synth</strong> -top multiple_modules</code></pre>
 
-From the above output log after synthesis, the obtained inferred cell is a MUX
+<img src="Images/Day_2_1d.PNG" width="600">
 
+From the above output log after synthesis, the design hierachy shows two sub modules , submodule_1 and submodule_2.
 #### 3. Generate netlist and save the verilog file after synthesis 
  <pre><code><strong>abc</strong> -liberty ../my_lib/lib/sky130_fd_sc_hd__tt_025C_1v80.lib</code></pre>   
- <pre><code><strong>write_verilog</strong> -noattr ternary_operator_mux_netlist.v </code></pre>
  <pre><code><strong>show</strong></code></pre>
+ <pre><code><strong>write_verilog</strong> -noattr multiple_modules.v_netlist.v </code></pre>
  
-![Day_4_Commands](Images/Day_4_Lab_GLS_3.PNG)
+<img src="Images/Day_2_1e.PNG" width="600">
 
 The schematic of the netlist shows two sub modules submodule 1 and submodule 2 and do not show the underlying cells of AND and OR gate. 
 The comparison between the intial verilog code and verilog code obtained from the netlist is shown below, 
@@ -91,12 +113,6 @@ The simulation of the verilog code, synthesis and generation of the netlist is d
 #### 1. Execute the verilog code in iverlog 
 <pre><code><strong>iverilog</strong> ternary_operator_mux.v tb_ternary_operator.v</code></pre>   
 <pre><code>./a.out</code></pre>
-<pre><code><strong>gtkwave</strong> tb_ternary_operator_mux.vcd</code></pre>
-
-
-The output obtained for the functionality with verilog code in GTKwave is shown below,
-
-![Day_4_Commands](Images/Day_4_Lab_GLS_1.png)
 
 #### 2. Perform Synthesis and flatten in Yosys
  <pre><code><strong>yosys</strong> </code></pre>   
