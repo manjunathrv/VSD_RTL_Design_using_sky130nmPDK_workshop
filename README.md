@@ -1,4 +1,18 @@
-# VSD_RTL_workshop
+# VSD RTL design workshop with sky130 Technology
+A 5-day workshop conducted by VSD on the topic of RTL design using sky130 Technology.
+
+
+
+
+https://www.vlsisystemdesign.com/rtl-design-using-verilog-with-sky130-technology/
+# Day 1 
+
+## Contents 
+1. Introduction to technology library file  
+2. Lab Session 1 - Hierachal and Flatten synthesis
+3. Lab Session 2 - Flip-Flop implementatation and synthesis 
+
+
 
 
 # Day 2 
@@ -167,29 +181,34 @@ From the above output log after synthesis, it is seen that only submodule 1 haav
 <img src="Images/Day_2_3b.PNG" width="600">
 
 The schematic of the netlist now shows only the AND gate from the submodule 1. 
-The synthesis of submodules in large design help to reduce the time taken in the synthesis of large designs.   
+The synthesis of submodules in large design help to reduce the time taken in the synthesis of large designs.<br/>   
+
+
+In this next examples, the test of different D-flip flop configurations as mentioned below are done. 
+1. Asynchronus Reset D-flip flop 
+2. Asynchronus Set D-flip flop 
+3. Synchronus Reset D-flip flop 
+
+A schematic of the three different D-flip flop elements is shown below,  <br/>
+
+
 
 ### Example 4
-In this example, the test of synthesis of a submodule is done.  
-A schematic of the three different D-flip flop elements is shown below,  <br/>
-1. Asynchronus Reset D-flip flop : Consists of a AND gate with A and B as inputs - We will only do synthesis of this submodule.
-2. Synchronus Reset D-flip flop : Consists of a OR gate having inputs C and output from submodule U1.  
-3. Asynchronus Reset D-flip flop : Consists of a AND gate with A and B as inputs - We will only do synthesis of this submodule.
-
-The schematic representation of the three different D-flip flop are shown in the below figure
-
 
 1. Asynchronus Reset D-flip flop :
 In a D-Flip flop with asynchronus reset, the output Q of the flop will go to active low when reset is low regardless of the clockedge.
 The verilog code of an Asynchronus Reset D-flip flop is shown below, 
 ```SystemVerilog
-   module incomp_if (input i0 , input i1 , input i2 , output reg y);
-   always @ (*)
-      begin
-	      if(i0)
-	   	y <= i1;
-      end
-   endmodule
+module dff_asyncres ( input clk ,  input async_reset , input d , output reg q );
+always @ (posedge clk , posedge async_reset)
+begin
+	if(async_reset)
+		q <= 1'b0;
+	else	
+		q <= d;
+end
+endmodule
+
 ```
 The simulation of the verilog code, synthesis and generation of the netlist are done by the following steps, 
 #### 1. Execute the verilog code in iverlog 
@@ -222,6 +241,41 @@ From the above output log after synthesis, it is seen that AND gate is inferred.
 
 The schematic of the netlist now shows only the AND gate from the submodule 1. 
 The synthesis of submodules in large design help to reduce the time taken in the synthesis of large designs.  
+
+### Example 5
+
+Asynchronus Set D-flip flop :
+In a D-Flip flop with asynchronus reset, the output Q of the flop will go to active low when reset is low regardless of the clockedge.
+The verilog code of an Asynchronus Reset D-flip flop is shown below, 
+```SystemVerilog
+module dff_asyncres ( input clk ,  input async_reset , input d , output reg q );
+always @ (posedge clk , posedge async_reset)
+begin
+	if(async_reset)
+		q <= 1'b0;
+	else	
+		q <= d;
+end
+endmodule
+
+```
+
+### Example 6
+Synchronus Reset D-flip flop :
+In a D-Flip flop with asynchronus reset, the output Q of the flop will go to active low when reset is low regardless of the clockedge.
+The verilog code of an Asynchronus Reset D-flip flop is shown below, 
+```SystemVerilog
+module dff_asyncres ( input clk ,  input async_reset , input d , output reg q );
+always @ (posedge clk , posedge async_reset)
+begin
+	if(async_reset)
+		q <= 1'b0;
+	else	
+		q <= d;
+end
+endmodule
+
+```
 
 
 
@@ -321,7 +375,7 @@ Hence,
 Consider the same sequential with Reset signal replaced with a set signal as below, 
 
 In the above case, the sequential logic cannot be optimised and the D-flop is needed for the logic network. 
-Hence, in does not have a sequential constant as compared in example in Figure 3_2. 
+Hence, it does not have a sequential constant as compared in example in Figure 3_2. 
 
 Lab
 
@@ -809,7 +863,7 @@ The problems that can arise due to the usage of the case statement are,
 	   	y <= i1;
       end
    endmodule
-
+   ```
 
 ## 5. Lab Session 2 Incomplete If-Else statement
 
