@@ -241,7 +241,7 @@ The output obtained for the functionality with verilog code in GTKwave is shown 
 As the reset goes to low, the output Q goes low irrespective of the clockcyle edge.<br/>
 The behaviour of the asynchronus reset D-flipflop is found to be correct.
 
-#### 2. Perform Synthesis of the submodule 1 in Yosys
+#### 2. Perform Synthesis in Yosys
  <pre><code><strong>yosys</strong> </code></pre>   
  <pre><code><strong>read_liberty</strong> -lib my_lib\lib\sky130_fd_sc_hd__tt_025C_1v80.lib </code></pre>
  <pre><code><strong>read_verilog</strong> dff_asyncres.v</code></pre>
@@ -288,7 +288,7 @@ The output obtained for the functionality with verilog code in GTKwave is shown 
 As the Set goes to high, the output Q goes high irrespective of the clockcyle edge.<br/>
 The behaviour of the asynchronus reset D-flipflop is found to be correct.
 
-#### 2. Perform Synthesis of the submodule 1 in Yosys
+#### 2. Perform Synthesis in Yosys
  <pre><code><strong>yosys</strong> </code></pre>   
  <pre><code><strong>read_liberty</strong> -lib my_lib\lib\sky130_fd_sc_hd__tt_025C_1v80.lib </code></pre>
  <pre><code><strong>read_verilog</strong> dff_async_set.v</code></pre>
@@ -333,7 +333,7 @@ The output obtained for the functionality with verilog code in GTKwave is shown 
 As the reset goes to low, the output Q goes low at the positive edge of the next clockcyle.<br/>
 The behaviour of the asynchronus reset D-flipflop is found to be correct.
 
-#### 2. Perform Synthesis of the submodule 1 in Yosys
+#### 2. Perform Synthesis in Yosys
  <pre><code><strong>yosys</strong> </code></pre>   
  <pre><code><strong>read_liberty</strong> -lib my_lib\lib\sky130_fd_sc_hd__tt_025C_1v80.lib </code></pre>
  <pre><code><strong>read_verilog</strong> async_reset.v</code></pre>
