@@ -363,7 +363,7 @@ From the above output log after synthesis, it is seen that a D-flipflop is infer
 ## 1. Introduction to optimisation : 
    Combinational logic optimisation is needed in a digital circuit design for the following main reasons, 
    - To minimise the area and power consumption.
-   - Direct 
+   - Optimise the constant propogation 
    - Reducing the number of gates by optimising the boolean logic using K-Map. 
 
 ### Constant propogation : 
