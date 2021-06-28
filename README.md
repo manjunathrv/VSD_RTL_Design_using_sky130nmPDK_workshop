@@ -8,17 +8,24 @@
 2. Lab Session 1 - Hierachal and Flatten synthesis
 3. Lab Session 2 - Flip-Flop implementatation and synthesis 
 
-
+ The steps followed is similar to Example 1 as described below, 
+- Input the RTL verilog code and testbench to iVerilog
+- Output obtained is visualised in gtk and check the functionality
+- Perform synthesis and generate netlist.
+- Input the netlist, verilog models and testbenct to iVerilog
+- Check the output waveform in gtk and compare with pre-synthesis RTL code. 
 
 
 ## 2. Lab Session 1 - Hierachal and Flatten synthesis
 ### Example 1 
 Consider the combinational circuit described below, 
 
-The combination circuit consists of two submodules. <\br>
+The combination circuit consists of two submodules. <br/>
+1. Submodule U1 : Consists of a AND gate with A and B as inputs. 
+2. Submodule U2 : Consists of a OR gate having inputs C and output from submodule U1.  
 
-
-   ```SystemVerilog
+The verilog code of the above combinational circuit with two submodule is shown below 
+```SystemVerilog
    module incomp_if (input i0 , input i1 , input i2 , output reg y);
    always @ (*)
       begin
@@ -27,6 +34,196 @@ The combination circuit consists of two submodules. <\br>
       end
    endmodule
 ```
+Next, the simulation of the verilog code, synthesis and generation of the netlist is done by the following steps, 
+#### 1. Execute the verilog code in iverlog 
+<pre><code><strong>iverilog</strong> ternary_operator_mux.v tb_ternary_operator.v</code></pre>   
+<pre><code>./a.out</code></pre>
+<pre><code><strong>gtkwave</strong> tb_ternary_operator_mux.vcd</code></pre>
+
+
+The output obtained for the functionality with verilog code in GTKwave is shown below,
+
+![Day_4_Commands](Images/Day_4_Lab_GLS_1.png)
+
+#### 2. Perform Synthesis in Yosys
+ <pre><code><strong>yosys</strong> </code></pre>   
+ <pre><code><strong>read_liberty</strong> -lib my_lib\lib\sky130_fd_sc_hd__tt_025C_1v80.lib </code></pre>
+ <pre><code><strong>read_verilog</strong> ternary_operator_mux.v</code></pre>
+ <pre><code><strong>synth</strong> -top ternary_operator_mux</code></pre>
+
+![Day_4_Commands](Images/Day_4_Lab_GLS_2.PNG)
+
+From the above output log after synthesis, the obtained inferred cell is a MUX
+
+#### 3. Generate netlist and save the verilog file after synthesis 
+ <pre><code><strong>abc</strong> -liberty ../my_lib/lib/sky130_fd_sc_hd__tt_025C_1v80.lib</code></pre>   
+ <pre><code><strong>write_verilog</strong> -noattr ternary_operator_mux_netlist.v </code></pre>
+ <pre><code><strong>show</strong></code></pre>
+ 
+![Day_4_Commands](Images/Day_4_Lab_GLS_3.PNG)
+
+The schematic of the netlist shows two sub modules submodule 1 and submodule 2 and do not show the underlying cells of AND and OR gate. 
+The comparison between the intial verilog code and verilog code obtained from the netlist is shown below, 
+
+
+
+
+The hierachal modules are preserved in the code generated from netlist similar to the reference verilog code. 
+
+
+### Example 2
+In this example, the test of flattening the heirachal verilog code is done.  
+The combination circuit consists of two submodules similar to Example 1. <br/>
+1. Submodule U1 : Consists of a AND gate with A and B as inputs. 
+2. Submodule U2 : Consists of a OR gate having inputs C and output from submodule U1.  
+
+The verilog code of the above combinational circuit with two submodule is shown below 
+```SystemVerilog
+   module incomp_if (input i0 , input i1 , input i2 , output reg y);
+   always @ (*)
+      begin
+	      if(i0)
+	   	y <= i1;
+      end
+   endmodule
+```
+The simulation of the verilog code, synthesis and generation of the netlist is done by the following steps, 
+#### 1. Execute the verilog code in iverlog 
+<pre><code><strong>iverilog</strong> ternary_operator_mux.v tb_ternary_operator.v</code></pre>   
+<pre><code>./a.out</code></pre>
+<pre><code><strong>gtkwave</strong> tb_ternary_operator_mux.vcd</code></pre>
+
+
+The output obtained for the functionality with verilog code in GTKwave is shown below,
+
+![Day_4_Commands](Images/Day_4_Lab_GLS_1.png)
+
+#### 2. Perform Synthesis and flatten in Yosys
+ <pre><code><strong>yosys</strong> </code></pre>   
+ <pre><code><strong>read_liberty</strong> -lib my_lib\lib\sky130_fd_sc_hd__tt_025C_1v80.lib </code></pre>
+ <pre><code><strong>read_verilog</strong> ternary_operator_mux.v</code></pre>
+ <pre><code><strong>synth</strong> synth -top ternary_operator_mux</code></pre>
+
+![Day_4_Commands](Images/Day_4_Lab_GLS_2.PNG)
+
+
+From the above output log after synthesis, the obtained inferred cell is a MUX
+
+#### 3. Generate netlist, Flatten and save the verilog file after synthesis 
+ <pre><code><strong>abc</strong> -liberty ../my_lib/lib/sky130_fd_sc_hd__tt_025C_1v80.lib</code></pre>   
+ <pre><code><strong>write_verilog</strong> -noattr ternary_operator_mux_netlist.v </code></pre>
+ <pre><code><strong>show</strong></code></pre>
+ 
+![Day_4_Commands](Images/Day_4_Lab_GLS_3.PNG)
+
+The schematic of the netlist now shows that the modules submodule 1 and submodule 2 show the entire structure of the combination network with standard cells. 
+The comparison between the intial verilog code and verilog code obtained from the netlist is shown below, 
+
+
+
+
+The hierachal modules are not preserved in the code generated from the netlist after falttening in comparison to the reference verilog code. 
+
+
+### Example 3
+In this example, the test of synthesis of a submodule is done.  
+The combination circuit consists of two submodules similar to Example 1 and 2. <br/>
+1. Submodule U1 : Consists of a AND gate with A and B as inputs - We will only do synthesis of this submodule.
+2. Submodule U2 : Consists of a OR gate having inputs C and output from submodule U1.  
+
+The verilog code of the above combinational circuit with two submodule is shown below 
+```SystemVerilog
+   module incomp_if (input i0 , input i1 , input i2 , output reg y);
+   always @ (*)
+      begin
+	      if(i0)
+	   	y <= i1;
+      end
+   endmodule
+```
+The simulation of the verilog code, synthesis and generation of the netlist are done by the following steps, 
+#### 1. Execute the verilog code in iverlog 
+<pre><code><strong>iverilog</strong> ternary_operator_mux.v tb_ternary_operator.v</code></pre>   
+<pre><code>./a.out</code></pre>
+<pre><code><strong>gtkwave</strong> tb_ternary_operator_mux.vcd</code></pre>
+
+
+The output obtained for the functionality with verilog code in GTKwave is shown below,
+
+![Day_4_Commands](Images/Day_4_Lab_GLS_1.png)
+
+#### 2. Perform Synthesis of the submodule 1 in Yosys
+ <pre><code><strong>yosys</strong> </code></pre>   
+ <pre><code><strong>read_liberty</strong> -lib my_lib\lib\sky130_fd_sc_hd__tt_025C_1v80.lib </code></pre>
+ <pre><code><strong>read_verilog</strong> ternary_operator_mux.v</code></pre>
+ <pre><code><strong>synth</strong> synth -top ternary_operator_mux</code></pre>
+
+![Day_4_Commands](Images/Day_4_Lab_GLS_2.PNG)
+
+
+From the above output log after synthesis, it is seen that AND gate is inferred. 
+
+#### 3. Generate netlist  
+ <pre><code><strong>abc</strong> -liberty ../my_lib/lib/sky130_fd_sc_hd__tt_025C_1v80.lib</code></pre>   
+ <pre><code><strong>write_verilog</strong> -noattr ternary_operator_mux_netlist.v </code></pre>
+ <pre><code><strong>show</strong></code></pre>
+ 
+![Day_4_Commands](Images/Day_4_Lab_GLS_3.PNG)
+
+The schematic of the netlist now shows only the AND gate from the submodule 1. 
+The synthesis of submodules in large design help to reduce the time taken in the synthesis of large designs.   
+
+### Example 4
+In this example, the test of synthesis of a submodule is done.  
+A schematic of the three different D-flip flop elements is shown below,  <br/>
+1. Asynchronus Reset D-flip flop : Consists of a AND gate with A and B as inputs - We will only do synthesis of this submodule.
+2. Synchronus Reset D-flip flop : Consists of a OR gate having inputs C and output from submodule U1.  
+3. Asynchronus Reset D-flip flop : Consists of a AND gate with A and B as inputs - We will only do synthesis of this submodule.
+2. Synchronus Reset D-flip flop : Consists of a OR gate having inputs C and output from submodule U1.
+
+The verilog code of the above combinational circuit with two submodule is shown below 
+```SystemVerilog
+   module incomp_if (input i0 , input i1 , input i2 , output reg y);
+   always @ (*)
+      begin
+	      if(i0)
+	   	y <= i1;
+      end
+   endmodule
+```
+The simulation of the verilog code, synthesis and generation of the netlist are done by the following steps, 
+#### 1. Execute the verilog code in iverlog 
+<pre><code><strong>iverilog</strong> ternary_operator_mux.v tb_ternary_operator.v</code></pre>   
+<pre><code>./a.out</code></pre>
+<pre><code><strong>gtkwave</strong> tb_ternary_operator_mux.vcd</code></pre>
+
+
+The output obtained for the functionality with verilog code in GTKwave is shown below,
+
+![Day_4_Commands](Images/Day_4_Lab_GLS_1.png)
+
+#### 2. Perform Synthesis of the submodule 1 in Yosys
+ <pre><code><strong>yosys</strong> </code></pre>   
+ <pre><code><strong>read_liberty</strong> -lib my_lib\lib\sky130_fd_sc_hd__tt_025C_1v80.lib </code></pre>
+ <pre><code><strong>read_verilog</strong> ternary_operator_mux.v</code></pre>
+ <pre><code><strong>synth</strong> synth -top ternary_operator_mux</code></pre>
+
+![Day_4_Commands](Images/Day_4_Lab_GLS_2.PNG)
+
+
+From the above output log after synthesis, it is seen that AND gate is inferred. 
+
+#### 3. Generate netlist  
+ <pre><code><strong>abc</strong> -liberty ../my_lib/lib/sky130_fd_sc_hd__tt_025C_1v80.lib</code></pre>   
+ <pre><code><strong>write_verilog</strong> -noattr ternary_operator_mux_netlist.v </code></pre>
+ <pre><code><strong>show</strong></code></pre>
+ 
+![Day_4_Commands](Images/Day_4_Lab_GLS_3.PNG)
+
+The schematic of the netlist now shows only the AND gate from the submodule 1. 
+The synthesis of submodules in large design help to reduce the time taken in the synthesis of large designs.  
+
+
 
 # Day 3 
 
