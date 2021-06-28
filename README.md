@@ -31,7 +31,7 @@ The opensource tools used in this workshop are,
 5. Check the output waveform in gtk and compare with pre-synthesis RTL code. 
 
 
-# Day 2 
+# Day 2
 
 ## Contents 
 1. Introduction to technology library file  
