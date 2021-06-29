@@ -490,15 +490,14 @@ Hence, it does not have a sequential constant as compared in example in Figure 3
 
 ## 1. Verification of Gate level Synthesized (GLS) netlist : 
 In the Gate level synthesis, the netlist obtained as the output after synthesis is used as the Design under test (DUT) 
-The test bench developed for the RTL design code is used for also testing the logical functionality of the netlist. 
+The test bench developed for the RTL design code is also used for testing the logical functionality of the netlist. 
 GLS is required to verify the logical correctness and ensuring timing specification are met after synthesis.  
 
 The flow diagram of the GLS setup with iVerilog is shown in Figure 4.1
 
 
 The input to the iverilog is the Netlist generated after synthesis, gate level verilog models and test bench. 
-The output of iverilog is the value change dump. The output vcd file is loaded in the GTK waver to check the logical correctness. 
-If the timing constraint is given in the 
+The output of iverilog is the value change dump. The output vcd file is loaded in the GTK wave to check the logical correctness. 
 In the next step, a comparison between a RTL design code and netlist is discussed. 
 Consider an example of a combinational network as shown in Figure 4.2. 
 
@@ -518,7 +517,7 @@ The mismatch found during the simulations tests done with the synthesised netlis
 - Non verilog standard coding. 
 
 ### Missing sensitivity list 
-In the verilog simulator, one of the key parameters that the simulator takes into account is the presence of acitivity, If there is no acitvity in the inputs, the 
+In the verilog simulator, one of the key parameters that the simulator takes into account is the presence of actvity, If there is no actvity in the inputs, the 
 Consider the following verilog code, 
 
 
@@ -526,10 +525,9 @@ In this functionality of the MUX defined in the verilog code, the select input c
 The output waveform of the above functionality defined in verilog is shown in the 
 
 The conditional statement defined by always (@sel) is only executed when sel is 0 or 1. 
-However, always block is not executed 
 
 
-This can be corrected by evaluating the function with the change of any signal .
+This can be corrected by evaluating the function with the change of any signal.
 The corrected verilog code is shown below, 
 
 
