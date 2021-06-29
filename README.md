@@ -10,12 +10,21 @@ Table of contents
 
 <!--ts-->
    * [Day 1](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#day-1)
-      * [Introduction to open-source EDA tools - iverilog, gtkwave and Yosys](#introduction-to-open-source-eda-tools-iverilog-gtkwave-and-yosys)
+      * [Introduction to open-source EDA tools - iverilog, gtkwave and Yosys](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#introduction-to-open-source-eda-tools---iverilog-gtkwave-and-yosys)
    * [Day 2](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#day-2)
-      * [Introduction to technology library file](#introduction-to-technology-library-file)
+      * [Introduction to technology library file](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#1-introduction-to-technology-library-file)
+      * [Lab Session 1 - Hierachal and Flatten synthesis](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#2-lab-session-1---hierachal-and-flatten-synthesis)
+      * [Lab Session 2 - Flip-Flop implementatation and synthesis](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#2-lab-session-1---hierachal-and-flatten-synthesis)
    * [Day 3](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#day-3)
+   	* [Introduction to optimisation](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#1-introduction-to-optimisation-)
    * [Day 4](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#day-4)
+   	* [Verification of Gate level Synthesized (GLS) netlist ](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#1-verification-of-gate-level-synthesized-gls-netlist-)
+   	* [Lab Session 1 GLS Synthesis simulation mismatch](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#2-lab-1-gls-synthesis-simulation-mismatch-)
    * [Day 5](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#day-5)
+   	* [If - Else statement](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#1-if---else-statement)
+   	* [Case structure](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#2-case-structure)
+   	* [Lab Session 1 Incomplete If-Else statement](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#4-lab-session-1-incomplete-if-else-statement)
+   	* [Lab Session 2 Incomplete Case statement](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#4-lab-session-2-incomplete-case-statement)
 <!--te-->
 
 
@@ -61,8 +70,6 @@ A snapshot of the contents of the technology file is show below,
 <img src="Images/Day_2_Intro_1.PNG" width="600">
 
 The attributes of each pin such as power, input capacitance, area and timing information are described in the lib file.
-
-
 
 ## 2. Lab Session 1 - Hierachal and Flatten synthesis
 ### Example 1 
@@ -217,6 +224,7 @@ From the above output log after synthesis, it is seen that only submodule 1 haav
 The schematic of the netlist now shows only the AND gate from the submodule 1. 
 The synthesis of submodules in large design help to reduce the time taken in the synthesis of large designs.<br/>   
 
+## 3. Lab Session 2 - Flip-Flop implementatation and synthesis 
 
 In this next examples, the test of different D-flip flop configurations as mentioned below are done. 
 1. Asynchronus Reset D-flip flop 
