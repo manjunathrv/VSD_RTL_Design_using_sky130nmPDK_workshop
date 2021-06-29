@@ -10,7 +10,12 @@ Table of contents
 
 <!--ts-->
    * [Day 1](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#day-1)
-      * [Introduction to open-source EDA tools - iverilog, gtkwave and Yosys](#day_1_introduction)
+      * [Introduction to open-source EDA tools - iverilog, gtkwave and Yosys](#introduction-to-open-source-eda-tools-iverilog-gtkwave-and-yosys)
+   * [Day 2](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#day-2)
+      * [Introduction to technology library file](#introduction-to-technology-library-file)
+   * [Day 3](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#day-3)
+   * [Day 4](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#day-4)
+   * [Day 5](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#day-5)
 <!--te-->
 
 
