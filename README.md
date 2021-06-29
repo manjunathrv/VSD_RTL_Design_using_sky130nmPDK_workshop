@@ -65,7 +65,7 @@ The opensource tools used in this workshop are,
 ## Contents 
 1. Introduction to technology library file  
 2. Lab Session 1 - Hierachal and Flatten synthesis
-3. Lab Session 2 - Flip-Flop implementatation and synthesis 
+3. Lab Session 2 - Flip-Flop implementation and synthesis 
 
 ## 1. Introduction to technology library file
 
@@ -229,7 +229,7 @@ From the above output log after synthesis, it is seen that only submodule 1 haav
 The schematic of the netlist now shows only the AND gate from the submodule 1. 
 The synthesis of submodules in large design help to reduce the time taken in the synthesis of large designs.<br/>   
 
-## 3. Lab Session 2 - Flip-Flop implementatation and synthesis 
+## 3. Lab Session 2 - Flip-Flop implementation and synthesis 
 
 In this next examples, the test of different D-flip flop configurations as mentioned below are done. 
 1. Asynchronus Reset D-flip flop 
