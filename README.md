@@ -383,8 +383,8 @@ From the above output log after synthesis, it is seen that a D-flipflop is infer
 
 ## Contents 
 1. Introduction to optimisation 
-2. Lab Session - Combinational logic optimisation
-3. Lab Session - Sequential logic optimisation
+2. Lab Session 1 - Combinational logic optimisation
+3. Lab Session 2 - Sequential logic optimisation
 
 ## 1. Introduction to optimisation : 
    Combinational logic optimisation is needed in a digital circuit design for the following main reasons, 
@@ -477,16 +477,14 @@ Consider the same sequential with Reset signal replaced with a set signal as bel
 In the above case, the sequential logic cannot be optimised and the D-flop is needed for the logic network. 
 Hence, it does not have a sequential constant as compared in example in Figure 3_2. 
 
-Lab
-
 
 
 # Day 4 
 
 ## Contents 
 1. Verification of Gate level Synthesized netlist  
-2. Lab Session - Combinational logic optimisation
-3. Lab Session - Sequential logic optimisation
+2. Lab Session 1 GLS Synthesis simulation mismatch
+3. Labsession 2 GLS Synthesis simulation mismatch 
 
 ## 1. Verification of Gate level Synthesized (GLS) netlist : 
 In the Gate level synthesis, the netlist obtained as the output after synthesis is used as the Design under test (DUT) 
@@ -534,7 +532,6 @@ The corrected verilog code is shown below,
 
 
 Thus the simulation will be corrected as below.
-
 
 
 
@@ -670,7 +667,7 @@ From the graphical representation of the netlist the obtained cell is mux2_1
 - Select input sel = 1, Output Y = i0 
 - Select input sel = 0, Output Y = i1
 
- ## 3. Lab 2 GLS Synthesis simulation mismatch : 
+ ## 3. Labsession 2 GLS Synthesis simulation mismatch : 
  
  
 # Day 5 
