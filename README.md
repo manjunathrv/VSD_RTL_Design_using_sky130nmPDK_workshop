@@ -15,16 +15,19 @@ Table of contents
       * [Introduction to technology library file](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#1-introduction-to-technology-library-file)
       * [Lab Session 1 - Hierachal and Flatten synthesis](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#2-lab-session-1---hierachal-and-flatten-synthesis)
       * [Lab Session 2 - Flip-Flop implementatation and synthesis](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#2-lab-session-1---hierachal-and-flatten-synthesis)
+    
    * [Day 3](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#day-3)
-   	* [Introduction to optimisation](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#1-introduction-to-optimisation-)
+      * [Introduction to optimisation](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#1-introduction-to-optimisation-)
+   	
    * [Day 4](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#day-4)
-   	* [Verification of Gate level Synthesized (GLS) netlist ](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#1-verification-of-gate-level-synthesized-gls-netlist-)
-   	* [Lab Session 1 GLS Synthesis simulation mismatch](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#2-lab-1-gls-synthesis-simulation-mismatch-)
+      * [Verification of Gate level Synthesized (GLS) netlist ](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#1-verification-of-gate-level-synthesized-gls-netlist-)
+      * [Lab Session 1 GLS Synthesis simulation mismatch](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#2-lab-1-gls-synthesis-simulation-mismatch-)
+ 
    * [Day 5](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#day-5)
-   	* [If - Else statement](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#1-if---else-statement)
-   	* [Case structure](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#2-case-structure)
-   	* [Lab Session 1 Incomplete If-Else statement](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#4-lab-session-1-incomplete-if-else-statement)
-   	* [Lab Session 2 Incomplete Case statement](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#4-lab-session-2-incomplete-case-statement)
+      * [If - Else statement](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#1-if---else-statement)
+      * [Case structure](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#2-case-structure)
+      * [Lab Session 1 Incomplete If-Else statement](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#4-lab-session-1-incomplete-if-else-statement)
+      * [Lab Session 2 Incomplete Case statement](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#4-lab-session-2-incomplete-case-statement)
 <!--te-->
 
 
