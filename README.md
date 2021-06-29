@@ -5,6 +5,16 @@ In this repository, the topics and lab session covered in the workshop is presen
 
 ### Workshop content writing still in progress.
 
+Table of contents
+=================
+
+<!--ts-->
+   * [Day 1](https://github.com/manjunathrv/VSD_RTL_Design_using_sky130nmPDK_workshop#day-1)
+      * [Introduction to open-source EDA tools - iverilog, gtkwave and Yosys](#day_1_introduction)
+<!--te-->
+
+
+
 # Day 1 
 
 ## Introduction to open-source EDA tools - iverilog, gtkwave and Yosys
